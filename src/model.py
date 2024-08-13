@@ -1,3 +1,4 @@
+from fileinput import filename
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -12,7 +13,8 @@ class Model:
     def __init__(self) -> None:
         self.driver = None
         self.url: str = ""
-        self.base_url = "https://www.forexfactory.com/calendar"
+        self.filename: str = ""
+        self.base_url: str = "https://www.forexfactory.com/calendar"
         self._data = []
         self._table = None
 
@@ -66,7 +68,7 @@ class Model:
             if len(row_data):
                 self._data.append(row_data)
 
-        reformat_scraped_data(self._data, "test")
+        reformat_scraped_data(self._data, self.filename)
 
     def shutdown(self):
         self.driver.close()
