@@ -11,6 +11,22 @@ class View:
 
         self.label_test = widgets.Label("Init")
 
+        self.event_options = widgets.VBox(
+            [
+                widgets.Checkbox(value=False, description="Growth"),
+                widgets.Checkbox(value=False, description="Inflation"),
+                widgets.Checkbox(value=False, description="Employment"),
+                widgets.Checkbox(value=False, description="Central Bank"),
+                widgets.Checkbox(value=False, description="Bonds"),
+                widgets.Checkbox(value=False, description="All Events"),
+                widgets.Checkbox(value=False, description="Housing"),
+                widgets.Checkbox(value=False, description="Consumer Surveys"),
+                widgets.Checkbox(value=False, description="Business Surveys"),
+                widgets.Checkbox(value=False, description="Speeches"),
+                widgets.Checkbox(value=False, description="Misc"),
+            ]
+        )
+
         self.currencies_options = widgets.VBox(
             [
                 widgets.Checkbox(description="AUD", value=False),
@@ -40,6 +56,8 @@ class View:
             checkbox.observe(self._on_currencies_change, names="value")
         for checkbox in self.impact_options.children:
             checkbox.observe(self._on_impact_change, names="value")
+        for checkbox in self.event_options.children:
+            checkbox.observe(self._on_event_type_change, names="value")
 
         self.update_label_button = widgets.Button(description="Print URL")
         self.update_label_button.on_click(self._print_url)
@@ -54,6 +72,15 @@ class View:
             self._view_model.end_date = change["new"].strftime("%b%d.%Y")
             self._update_label()
 
+    def _on_event_type_change(self, change):
+        selected_events = [
+            idx + 1
+            for idx, checkbox in enumerate(self.event_options.children)
+            if checkbox.value
+        ]
+        self._view_model.event_types = ",".join(map(str, selected_events))
+        self._update_label()
+
     def _on_currencies_change(self, change):
         selected_currencies = [
             idx + 1
@@ -64,10 +91,9 @@ class View:
         self._update_label()
 
     def _on_impact_change(self, change):
-        impact_map = {"Gray": 1, "Yellow": 2, "Orange": 3, "Red": 4}
         selected_impacts = [
-            impact_map[checkbox.description]
-            for checkbox in self.impact_options.children
+            idx
+            for idx, checkbox in enumerate(self.impact_options.children)
             if checkbox.value
         ]
         self._view_model.impacts = ",".join(map(str, selected_impacts))
@@ -76,7 +102,8 @@ class View:
     def _update_label(self):
         self.label_test.value = (
             f"Start: {self._view_model.start_date}, End: {self._view_model.end_date}, "
-            f"Currencies: {self._view_model.currencies}, Impacts: {self._view_model.impacts}"
+            f"Currencies: {self._view_model.currencies}, Impacts: {self._view_model.impacts}, "
+            f"Event Types: {self._view_model.event_types}"
         )
 
     def _print_url(self, button):
@@ -88,4 +115,5 @@ class View:
         display(self.label_test)
         display(self.currencies_options)
         display(self.impact_options)
+        display(self.event_options)
         display(self.update_label_button)
