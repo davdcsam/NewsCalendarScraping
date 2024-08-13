@@ -31,6 +31,6 @@ class ViewModel(HasTraits):
 
             formatted_start = start_date_obj.strftime("%b%d.%Y")
             formatted_end = end_date_obj.strftime("%b%d.%Y")
-            self.url = f"https://www.forexfactory.com/calendar?range={formatted_start}-{formatted_end}&permalink=true"
+            self.url = f"{self._model.base_url}?range={formatted_start}-{formatted_end}&permalink=true"
             print(f"ViewModel URL updated to: {self.url}")  # Mensaje de depuración
             self._model.url = self.url

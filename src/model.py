@@ -12,14 +12,14 @@ class Model:
     def __init__(self) -> None:
         self.driver = None
         self.url: str = ""
-        self._base_url = "https://www.forexfactory.com/calendar"
+        self.base_url = "https://www.forexfactory.com/calendar"
         self._data = []
         self._table = None
 
     def launch(self) -> Literal[False] | None:
         self.driver = webdriver.Chrome()
         parsed_url = urlparse(self.url)
-        if self._base_url not in self.url and not all(
+        if self.base_url not in self.url and not all(
             [parsed_url.scheme, parsed_url.netloc]
         ):
             return False

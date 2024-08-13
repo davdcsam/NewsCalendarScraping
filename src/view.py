@@ -8,7 +8,7 @@ class View:
 
         self.start_datepicker = widgets.DatePicker(description="Start", disabled=False)
         self.end_datepicker = widgets.DatePicker(description="End", disabled=False)
-w        self.label_test = widgets.Label("Init")
+        self.label_test = widgets.Label("")
         self.print_url_button = widgets.Button(description="Print URL")
 
         self.start_datepicker.observe(self._on_start_picker_change, names="value")
