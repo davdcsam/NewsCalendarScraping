@@ -9,39 +9,56 @@ class View:
         self.start_datepicker = widgets.DatePicker(description="Start", disabled=False)
         self.end_datepicker = widgets.DatePicker(description="End", disabled=False)
 
-        self.label_test = widgets.Label("Init")
+        self.label_url = widgets.Label("Please fill in the blanks")
 
-        self.event_options = widgets.VBox(
+        # Checkboxes for Event Types
+        self.event_options = widgets.HBox(
             [
-                widgets.Checkbox(value=False, description="Growth"),
-                widgets.Checkbox(value=False, description="Inflation"),
-                widgets.Checkbox(value=False, description="Employment"),
-                widgets.Checkbox(value=False, description="Central Bank"),
-                widgets.Checkbox(value=False, description="Bonds"),
-                widgets.Checkbox(value=False, description="All Events"),
-                widgets.Checkbox(value=False, description="Housing"),
-                widgets.Checkbox(value=False, description="Consumer Surveys"),
-                widgets.Checkbox(value=False, description="Business Surveys"),
-                widgets.Checkbox(value=False, description="Speeches"),
-                widgets.Checkbox(value=False, description="Misc"),
+                widgets.VBox(
+                    [
+                        widgets.Checkbox(value=False, description="Growth"),
+                        widgets.Checkbox(value=False, description="Inflation"),
+                        widgets.Checkbox(value=False, description="Employment"),
+                        widgets.Checkbox(value=False, description="Central Bank"),
+                        widgets.Checkbox(value=False, description="Bonds"),
+                    ]
+                ),
+                widgets.VBox(
+                    [
+                        widgets.Checkbox(value=False, description="All Events"),
+                        widgets.Checkbox(value=False, description="Housing"),
+                        widgets.Checkbox(value=False, description="Consumer Surveys"),
+                        widgets.Checkbox(value=False, description="Business Surveys"),
+                        widgets.Checkbox(value=False, description="Speeches"),
+                        widgets.Checkbox(value=False, description="Misc"),
+                    ]
+                ),
             ]
         )
 
-        self.currencies_options = widgets.VBox(
+        self.currencies_options = widgets.HBox(
             [
-                widgets.Checkbox(description="AUD", value=False),
-                widgets.Checkbox(description="CAD", value=False),
-                widgets.Checkbox(description="CHF", value=False),
-                widgets.Checkbox(description="CNY", value=False),
-                widgets.Checkbox(description="EUR", value=False),
-                widgets.Checkbox(description="GBP", value=False),
-                widgets.Checkbox(description="JPY", value=False),
-                widgets.Checkbox(description="NZD", value=False),
-                widgets.Checkbox(description="USD", value=False),
+                widgets.VBox(
+                    [
+                        widgets.Checkbox(description="AUD", value=False),
+                        widgets.Checkbox(description="CAD", value=False),
+                        widgets.Checkbox(description="CHF", value=False),
+                        widgets.Checkbox(description="CNY", value=False),
+                        widgets.Checkbox(description="EUR", value=False),
+                    ]
+                ),
+                widgets.VBox(
+                    [
+                        widgets.Checkbox(description="GBP", value=False),
+                        widgets.Checkbox(description="JPY", value=False),
+                        widgets.Checkbox(description="NZD", value=False),
+                        widgets.Checkbox(description="USD", value=False),
+                    ]
+                ),
             ]
         )
 
-        self.impact_options = widgets.VBox(
+        self.impact_options = widgets.HBox(
             [
                 widgets.Checkbox(description="Gray", value=False),
                 widgets.Checkbox(description="Yellow", value=False),
@@ -100,7 +117,7 @@ class View:
         self._update_label()
 
     def _update_label(self):
-        self.label_test.value = (
+        self.label_url.value = (
             f"Start: {self._view_model.start_date}, End: {self._view_model.end_date}, "
             f"Currencies: {self._view_model.currencies}, Impacts: {self._view_model.impacts}, "
             f"Event Types: {self._view_model.event_types}"
@@ -112,7 +129,7 @@ class View:
     def display_datepickers(self):
         display(self.start_datepicker)
         display(self.end_datepicker)
-        display(self.label_test)
+        display(self.label_url)
         display(self.currencies_options)
         display(self.impact_options)
         display(self.event_options)
