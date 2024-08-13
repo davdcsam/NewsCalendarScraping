@@ -7,6 +7,7 @@ class ViewModel(HasTraits):
     end_date = Unicode()
     url = Unicode()
     currencies = Unicode()
+    impacts = Unicode()
 
     def __init__(self, model):
         super().__init__()
@@ -25,6 +26,10 @@ class ViewModel(HasTraits):
     def _on_currencies_change(self, change):
         self._update_url()
 
+    @observe("impacts")
+    def _on_impacts_change(self, change):
+        self._update_url()
+
     def _update_url(self):
         if self.start_date and self.end_date:
             try:
@@ -34,20 +39,28 @@ class ViewModel(HasTraits):
                 print("Error en el formato de la fecha.")
                 return
 
+            # Dates
             formatted_start = start_date_obj.strftime("%b%d.%Y")
             formatted_end = end_date_obj.strftime("%b%d.%Y")
 
+            # Currencies
             currencies_list = self.currencies.split(",")
             if len(currencies_list) == 1:
-                currencies_param = currencies_list[
-                    0
-                ]
+                currencies_param = currencies_list[0]
             else:
-                currencies_param = ",".join(
-                    currencies_list
-                )
+                currencies_param = ",".join(currencies_list)
 
-            self.url = f"https://www.forexfactory.com/calendar?range={formatted_start}-{formatted_end}&permalink=true&impacts=1&event_types=1,2,3,4,5,7,8,9,10,11&currencies={currencies_param}"
+            # Impacts
+            impacts_list = [
+                impact for impact in self.impacts.split(",") if impact.strip()
+            ]
+            impacts_list = [str(int(impact) - 1) for impact in impacts_list]
+            if len(impacts_list) == 1:
+                impacts_param = impacts_list[0]
+            else:
+                impacts_param = ",".join(impacts_list)
 
-            print(f"ViewModel URL updated to: {self.url}")  # Mensaje de depuración
+            self.url = f"{self._model.base_url}?range={formatted_start}-{formatted_end}&permalink=true&impacts={impacts_param}&event_types=1,2,3,4,5,7,8,9,10,11&currencies={currencies_param}"
+
+            print(f"ViewModel URL updated to: {self.url}")
             self._model.url = self.url
