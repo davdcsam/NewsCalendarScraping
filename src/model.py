@@ -9,17 +9,19 @@ from src.config import ALLOWED_ELEMENT_TYPES,ICON_COLOR_MAP
 
 class Model:
     def __init__(self) -> None:
-        self.driver = webdriver.Chrome()
+        self.driver = None
+        self.url: str = ""
         self._base_url = "https://www.forexfactory.com/calendar"
         self._data = []
         self._table = None
 
-    def launch(self, url) -> (Literal[False] | None):
-        parsed_url = urlparse(url)
-        if self._base_url not in url and not all([parsed_url.scheme, parsed_url.netloc]):
+    def launch(self) -> (Literal[False] | None):
+        self.driver = webdriver.Chrome()
+        parsed_url = urlparse(self.url)
+        if self._base_url not in self.url and not all([parsed_url.scheme, parsed_url.netloc]):
             return False
         
-        self.driver.get(url)
+        self.driver.get(self.url)
         self._table = self.driver.find_element(By.CLASS_NAME, "calendar__table")
 
     def scroller(self) -> None:
