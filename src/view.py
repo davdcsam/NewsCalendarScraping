@@ -22,9 +22,7 @@ class View:
             description="Start",
             disabled=False,
         )
-        self.start_datepicker.value = datetime.date(2023, 1, 1)
         self.end_datepicker = widgets.DatePicker(description="End", disabled=False)
-        self.end_datepicker.value = datetime.date(2025, 1, 1)
 
         # Checkboxes for Event Types
         self.label_events_options = widgets.HTML(
@@ -43,7 +41,9 @@ class View:
                 ),
                 widgets.VBox(
                     [
-                        widgets.Checkbox(value=False, description="All Events"),
+                        widgets.Checkbox(
+                            value=False, description="All Events", disabled=True
+                        ),
                         widgets.Checkbox(value=False, description="Housing"),
                         widgets.Checkbox(value=False, description="Consumer Surveys"),
                         widgets.Checkbox(value=False, description="Business Surveys"),

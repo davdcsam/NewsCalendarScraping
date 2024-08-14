@@ -17,16 +17,16 @@ class Model:
         self._data = []
         self._table = None
 
-    def launch(self) -> Literal[False] | None:
-        self.driver = webdriver.Chrome()
+    def launch(self) -> bool:
         parsed_url = urlparse(self.url)
         if self.base_url not in self.url and not all(
             [parsed_url.scheme, parsed_url.netloc]
         ):
             return False
-
+        self.driver = webdriver.Chrome()
         self.driver.get(self.url)
         self._table = self.driver.find_element(By.CLASS_NAME, "calendar__table")
+        return True
 
     def scroller(self) -> None:
         while True:

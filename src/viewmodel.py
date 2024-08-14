@@ -79,4 +79,8 @@ class ViewModel(HasTraits):
             self._model.url = self.url
 
     def callback_lunch(self):
-        self._model.launch()
+        self._update_url()
+        if self._model.launch():
+            self._model.scroller()
+            self._model.scraper()
+            self._model.shutdown()
