@@ -2,6 +2,9 @@ from traitlets import HasTraits, Unicode, observe
 from datetime import datetime
 
 
+# Modelview should not have Model logic
+
+
 class ViewModel(HasTraits):
     start_date = Unicode()
     end_date = Unicode()
@@ -74,3 +77,6 @@ class ViewModel(HasTraits):
 
             print(f"ViewModel URL updated to: {self.url}")
             self._model.url = self.url
+
+    def callback_lunch(self):
+        self._model.launch()
