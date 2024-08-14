@@ -6,12 +6,12 @@ class View:
     def __init__(self, view_model) -> None:
         self._view_model = view_model
 
+        self.label_datetime = widgets.Label("Date Pickers")
         self.start_datepicker = widgets.DatePicker(description="Start", disabled=False)
         self.end_datepicker = widgets.DatePicker(description="End", disabled=False)
 
-        self.label_url = widgets.Label("Please fill in the blanks")
-
         # Checkboxes for Event Types
+        self.label_events_options = widgets.Label("Events Options")
         self.event_options = widgets.HBox(
             [
                 widgets.VBox(
@@ -36,6 +36,7 @@ class View:
             ]
         )
 
+        self.label_currencies_options = widgets.Label("Currencies Options")
         self.currencies_options = widgets.HBox(
             [
                 widgets.VBox(
@@ -58,6 +59,7 @@ class View:
             ]
         )
 
+        self.label_impact_optiones = widgets.Label("Impact Options")
         self.impact_options = widgets.HBox(
             [
                 widgets.Checkbox(description="Gray", value=False),
@@ -76,6 +78,7 @@ class View:
         for checkbox in self.event_options.children:
             checkbox.observe(self._on_event_type_change, names="value")
 
+        self.label_url = widgets.Label("Please fill in the blanks")
         self.update_label_button = widgets.Button(description="Print URL")
         self.update_label_button.on_click(self._print_url)
 
@@ -127,10 +130,18 @@ class View:
         print(self._view_model.url)
 
     def display_datepickers(self):
+        display(self.label_datetime)
         display(self.start_datepicker)
         display(self.end_datepicker)
-        display(self.label_url)
+
+        display(self.label_currencies_options)
         display(self.currencies_options)
+
+        display(self.label_impact_optiones)
         display(self.impact_options)
+
+        display(self.label_events_options)
         display(self.event_options)
+        
+        display(self.label_url)
         display(self.update_label_button)
