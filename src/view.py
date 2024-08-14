@@ -1,3 +1,5 @@
+import datetime
+from re import S
 import ipywidgets as widgets
 from IPython.display import display
 
@@ -16,8 +18,13 @@ class View:
         self.label_datetime = widgets.HTML(
             value='<h1 style="font-family: Arial, sans-serif; font-size: 1.75em; color: #333; margin: 2px 0px 2px 50px;">Date Pickers</h1>'
         )
-        self.start_datepicker = widgets.DatePicker(description="Start", disabled=False)
+        self.start_datepicker = widgets.DatePicker(
+            description="Start",
+            disabled=False,
+        )
+        self.start_datepicker.value = datetime.date(2023, 1, 1)
         self.end_datepicker = widgets.DatePicker(description="End", disabled=False)
+        self.end_datepicker.value = datetime.date(2025, 1, 1)
 
         # Checkboxes for Event Types
         self.label_events_options = widgets.HTML(
@@ -97,36 +104,39 @@ class View:
             checkbox.observe(self._on_impact_change, names="value")
 
         self.label_url = widgets.Label("Please fill in the blanks")
-        self.update_label_button = widgets.Button(description="Print URL")
-        self.update_label_button.on_click(self._print_url)
+        self.run_button = widgets.Button(description="RUN")
+        self.run_button.style.button_color = "#37F21B"
+        self.run_button.on_click(self._on_click_run_button)
 
     def _on_start_picker_change(self, change):
-        if change["new"] is not None:
+        if isinstance(change["new"], datetime.date) and change["new"].year <= 9999:
             self._view_model.start_date = change["new"].strftime("%b%d.%Y")
             self._update_label()
 
     def _on_end_picker_change(self, change):
-        if change["new"] is not None:
+        if isinstance(change["new"], datetime.date) and change["new"].year <= 9999:
             self._view_model.end_date = change["new"].strftime("%b%d.%Y")
             self._update_label()
 
     def _on_event_type_change(self, change):
-        selected_events = [
-            idx + 1
-            for vbox in self.event_options.children
-            for idx, checkbox in enumerate(vbox.children)
-            if checkbox.value
-        ]
+        selected_events = []
+        index = 1
+        for vbox in self.event_options.children:
+            for checkbox in vbox.children:
+                if checkbox.value:
+                    selected_events.append(index)
+                index += 1
         self._view_model.event_types = ",".join(map(str, selected_events))
         self._update_label()
 
     def _on_currencies_change(self, change):
-        selected_currencies = [
-            idx + 1
-            for vbox in self.currencies_options.children
-            for idx, checkbox in enumerate(vbox.children)
-            if checkbox.value
-        ]
+        selected_currencies = []
+        index = 1
+        for vbox in self.currencies_options.children:
+            for checkbox in vbox.children:
+                if checkbox.value:
+                    selected_currencies.append(index)
+                index += 1
         self._view_model.currencies = ",".join(map(str, selected_currencies))
         self._update_label()
 
@@ -136,8 +146,6 @@ class View:
             for idx, checkbox in enumerate(self.impact_options.children)
             if checkbox.value
         ]
-        ###
-        print(selected_impacts)
         self._view_model.impacts = ",".join(map(str, selected_impacts))
         self._update_label()
 
@@ -148,8 +156,8 @@ class View:
             f"Event Types: {self._view_model.event_types}"
         )
 
-    def _print_url(self, button):
-        print(self._view_model.url)
+    def _on_click_run_button(self, button):
+        self._view_model.callback_lunch()
 
     def display_datepickers(self):
         display(self.title)
@@ -169,4 +177,4 @@ class View:
         display(self.event_options)
 
         display(self.label_url)
-        display(self.update_label_button)
+        display(self.run_button)
