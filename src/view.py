@@ -42,7 +42,7 @@ class View:
                 widgets.VBox(
                     [
                         widgets.Checkbox(
-                            value=False, description="All Events", disabled=True
+                            value=False, description="All Events", disabled=False
                         ),
                         widgets.Checkbox(value=False, description="Housing"),
                         widgets.Checkbox(value=False, description="Consumer Surveys"),
