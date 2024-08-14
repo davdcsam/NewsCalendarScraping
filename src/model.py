@@ -67,7 +67,7 @@ class Model:
             if len(row_data):
                 self._data.append(row_data)
 
-        reformat_scraped_data(self._data, self.filename)
+        reformat_scraped_data(self._data, self.filename, self.url)
 
     def shutdown(self):
         self.driver.close()
