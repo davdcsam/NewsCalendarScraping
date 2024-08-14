@@ -6,12 +6,23 @@ class View:
     def __init__(self, view_model) -> None:
         self._view_model = view_model
 
-        self.label_datetime = widgets.Label("Date Pickers")
+        self.title = widgets.HTML(
+            value='<h1 style="font-family: Arial, sans-serif; font-size: 2em; color: #333; margin: 10px 0px 0px 50px;">News Calendar Scraping</h1>'
+        )
+        self.description = widgets.HTML(
+            value='<p style="font-family: Arial, sans-serif; font_size: 2em; color: #333; margin: 2px 0px 2px 50px;">Define the time interval, select at least one of the check boxes and click the green Run button.</p>'
+        )
+
+        self.label_datetime = widgets.HTML(
+            value='<h1 style="font-family: Arial, sans-serif; font-size: 1.75em; color: #333; margin: 2px 0px 2px 50px;">Date Pickers</h1>'
+        )
         self.start_datepicker = widgets.DatePicker(description="Start", disabled=False)
         self.end_datepicker = widgets.DatePicker(description="End", disabled=False)
 
         # Checkboxes for Event Types
-        self.label_events_options = widgets.Label("Events Options")
+        self.label_events_options = widgets.HTML(
+            value='<h1 style="font-family: Arial, sans-serif; font-size: 1.75em; color: #333; margin: 2px 0px 2px 50px;">Event</h1>'
+        )
         self.event_options = widgets.HBox(
             [
                 widgets.VBox(
@@ -36,7 +47,9 @@ class View:
             ]
         )
 
-        self.label_currencies_options = widgets.Label("Currencies Options")
+        self.label_currencies_options = widgets.HTML(
+            value='<h1 style="font-family: Arial, sans-serif; font-size: 1.75em; color: #333; margin: 2px 0px 2px 50px;">Currencies</h1>'
+        )
         self.currencies_options = widgets.HBox(
             [
                 widgets.VBox(
@@ -59,7 +72,9 @@ class View:
             ]
         )
 
-        self.label_impact_optiones = widgets.Label("Impact Options")
+        self.label_impact_optiones = widgets.HTML(
+            value='<h1 style="font-family: Arial, sans-serif; font-size: 1.75em; color: #333; margin: 2px 0px 2px 50px;">Impacts</h1>'
+        )
         self.impact_options = widgets.HBox(
             [
                 widgets.Checkbox(description="Gray", value=False),
@@ -130,6 +145,9 @@ class View:
         print(self._view_model.url)
 
     def display_datepickers(self):
+        display(self.title)
+        display(self.description)
+
         display(self.label_datetime)
         display(self.start_datepicker)
         display(self.end_datepicker)
@@ -142,6 +160,6 @@ class View:
 
         display(self.label_events_options)
         display(self.event_options)
-        
+
         display(self.label_url)
         display(self.update_label_button)
